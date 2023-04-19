@@ -1,14 +1,54 @@
 from microbit import *
-from Motor_Control import *
-from Message_Decoder import *
+import radio
+radio.on()
+radio.config(channel = 1)
 
-motor_pins = [pin12, pin13, pin14, pin15]
-speed = 256
+# Forwards/Backwards
+f = pin0
+b = pin1
+# Left/Right
+l = pin9
+r = pin8
+
+horn = pin2
+lights = pin3
+check = True
+
+message = ''
 
 while True:
-    instructions = ['s', 's', 'q', 'd']
-    instructions = get_message()
-    forward_backward = instructions[f_b]
-    left_right = instructions[l_r]
-    move(forward_backward, left_right, speed)
-    sleep(10)
+    incoming = radio.receive();
+    old_message = message
+    
+    if incoming != 'stop': 
+        if f.read_digital():
+            message = '(f,'
+        elif b.read_digital():
+            message = '(b,'
+        else:
+            message = '(s,'
+        if l.read_digital():
+            message += 'l,'
+        elif r.read_digital():
+            message += 'r,'
+        else:
+           message += 's,'
+        if horn.read_digital():
+            message += 'l,'
+        else:
+            message += 'q,'
+        if lights.read_digital():
+            message += 'l)'
+        else:
+            message += 'd)'
+    
+    if incoming == 'stop':
+        if not (f.read_digital() or b.read_digital() or l.read_digital() or r.read_digital()):
+            incoming = None
+            
+    if message != old_message:
+        radio.send(message)
+        print(message)
+
+
+
