@@ -21,6 +21,11 @@ def move(_fb, _lr, _speed):
             on += _speed
         elif _lr == 'r':
             tn += _speed
+    elif _fb == 's':
+        if _lr == 'l':
+            tp = _speed
+        elif _lr == 'r':
+            op = _speed
     set_motors(op, on, tp, tn, motor_pins)
 
 def set_motors(one_pos_val, one_neg_val, two_pos_val, two_neg_val, motor_pins):
