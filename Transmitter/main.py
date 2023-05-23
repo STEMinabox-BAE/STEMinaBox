@@ -21,14 +21,18 @@ while True:
     if incoming != 'stop': 
         if f.read_digital():
             message = '(f,'
+            display.show(Image.ARROW_N)
         elif b.read_digital():
             message = '(b,'
+            display.show(Image.ARROW_S)
         else:
             message = '(s,'
         if l.read_digital():
             message += 'l)'
+            display.show(Image.ARROW_W)
         elif r.read_digital():
             message += 'r)'
+            display.show(Image.ARROW_E)
         else:
            message += 's)'
     
