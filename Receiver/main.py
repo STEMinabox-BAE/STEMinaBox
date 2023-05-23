@@ -2,7 +2,7 @@ from microbit import *
 from Motor_Control import *
 from Message_Decoder import *
 
-speed = 256
+speed = 512
 set_radio_channel(1)
 
 f_b_instruction = 0
