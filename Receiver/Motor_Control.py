@@ -1,8 +1,6 @@
 from microbit import *
-from main import motor_pins
 
-f_b = 0
-l_r = 1
+motor_pins = [pin12, pin13, pin14, pin15]
 
 def move(_fb, _lr, _speed):
     op = 0
