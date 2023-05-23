@@ -11,9 +11,11 @@ def move(_fb, _lr, _speed):
         op = _speed
         tp = _speed
         if _lr == 'l':
-            tp += _speed
-        elif _lr == 'r':
+            # tp += _speed
             op += _speed
+        elif _lr == 'r':
+            # op += _speed
+            tp += _speed
     elif _fb == 'b':
         on = _speed
         tn = _speed
