@@ -2,20 +2,20 @@ from microbit import *
 import radio
 import power
 
-group_number = 1
-
 radio.on()
-radio.config(queue = 10, channel = group_number, power = 4)
 
 keywords = ['(', '(', '(', 'f', 'b', 's', ',', ',', ',',
-            'r', 'l', 's', ',', ',', ',', 'l', 'q', 'q',
-            ',', ',', ',', 'l', 'd', 'd', ')', ')', ')']
+            'r', 'l', 's', ')', ')', ')']
 
-passive_message = list((keywords[6], keywords[12], keywords[18], keywords[24]))
+passive_message = list((keywords[5], keywords[11]))
+
+def set_radio_channel(desired_channel, desired_queue = 10, desired_power = 4):
+    radio.config(queue = desired_queue, channel = desired_channel, power = desired_power)
 
 def is_message_valid(message):
-    for i in range(0, 9):
+    for i in range(0, 5):
         if (message[i] != keywords[3*i]) and (message[i] != keywords[(3*i) + 1]) and (message[i] != keywords[(3*i) + 2]):
+            print('Invalid')
             return False
     return True
 
@@ -26,7 +26,7 @@ def get_message():
             power.off()
             return passive_message
         if is_message_valid(message):
-            instructions = list((message[1], message[3], message[5], message[7]))
+            instructions = list((message[1], message[3]))
             return instructions
         return passive_message
     else:
