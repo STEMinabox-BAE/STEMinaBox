@@ -2,8 +2,8 @@ from microbit import *
 from Motor_Control import *
 from Message_Decoder import *
 
-speed = 256
-set_radio_channel(1)
+speed =  
+set_radio_channel( )
 
 while True:
     instructions = get_message()
