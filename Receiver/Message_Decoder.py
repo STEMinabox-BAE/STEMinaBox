@@ -1,7 +1,6 @@
 from microbit import *
 import radio
 import power
-
 radio.on()
 
 keywords = ['(', '(', '(', 'f', 'b', 's', ',', ',', ',',
