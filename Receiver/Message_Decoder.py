@@ -1,6 +1,11 @@
 from microbit import *
 import radio
 import power
+
+the_bus_is_on = True
+are_we_going_forwards_or_backwards = 0
+are_we_going_left_or_right = 1
+
 radio.on()
 
 keywords = ['(', '(', '(', 'f', 'b', 's', ',', ',', ',',
@@ -18,7 +23,7 @@ def is_message_valid(message):
             return False
     return True
 
-def get_message():
+def open_message():
     message = radio.receive()
     if message != None:
         if message == 'STOP':
