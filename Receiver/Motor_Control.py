@@ -2,6 +2,9 @@ from microbit import *
 
 motor_pins = [pin12, pin13, pin14, pin15]
 
+'''Motor one is left side 
+   Motor two is right side'''
+
 def move(_fb, _lr, _speed):
     op = 0
     on = 0
@@ -11,18 +14,20 @@ def move(_fb, _lr, _speed):
         op = _speed
         tp = _speed
         if _lr == 'l':
-            tp += _speed
+            # tp += _speed
+            op /= 2
         elif _lr == 'r':
-            op += _speed
+            # op += _speed
+            tp /= 2
     elif _fb == 'b':
         on = _speed
         tn = _speed
         if _lr == 'l':
-            # on += _speed
-            tn += _speed
-        elif _lr == 'r':
             # tn += _speed
-            on += _speed
+            on /= 2
+        elif _lr == 'r':
+            # on += _speed
+            tn /= 2
     elif _fb == 's':
         if _lr == 'l':
             tp = _speed
