@@ -6,6 +6,8 @@ def get_serial_number(type=hex):
     DEVICEID_INDEX = 25 # deviceid[1]
     return type(machine.mem32[NRF_FICR_BASE + (DEVICEID_INDEX*4)]& 0xFFFFFFFF)
 
+print(get_serial_number())
 # Scroll the serial number on the LED display
 while True:
     display.scroll(get_serial_number())
+
