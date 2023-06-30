@@ -4,7 +4,10 @@ import music
 from Motor_Control import *
 from Message_Decoder import *
 
-music.play(NYAN)
+music.play(music.NYAN)
+# music.play(music.FUNK)
+# https://microbit-micropython.readthedocs.io/en/v1.0.1/music.html
+# For the full list of pre-installed music
 
 # How fast do we want the bus to go?
 speed =
