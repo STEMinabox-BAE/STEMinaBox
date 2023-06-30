@@ -1,7 +1,10 @@
 # These are instruction manuals for our program to use
 from microbit import *
+import music
 from Motor_Control import *
 from Message_Decoder import *
+
+music.play(NYAN)
 
 # How fast do we want the bus to go?
 speed =
