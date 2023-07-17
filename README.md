@@ -31,4 +31,5 @@ The file may be in the form 'Receiver.hex.txt' in which case you will need to re
 ## Transmitter
 The Transmitter Micro:bit is inside the controller, and already has all the necessary code to run properly. The code is contained in this repository for you to explore if you wish.
 
-If you have any issues, please contact Sebastian Hewitt (2)
+## Issues
+If you have any further issues, please contact Sebastian Hewitt (2)
