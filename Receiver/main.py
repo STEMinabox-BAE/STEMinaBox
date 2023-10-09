@@ -1,19 +1,12 @@
 # These are instruction manuals for our program to use
 from microbit import *
-import music
 from Motor_Control import *
 from Message_Decoder import *
-
-music.play(music.NYAN)
-# music.play(music.FUNK)
-# https://microbit-micropython.readthedocs.io/en/v1.0.1/music.html
-# For the full list of pre-installed music
 
 # How fast do we want the bus to go?
 speed =
 # What channel is our radio set to?
 set_radio_channel( )        
-
 
 # If the bus is on, keep reading this code over and over
 while the_bus_is_on:
