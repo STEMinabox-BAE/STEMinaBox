@@ -44,6 +44,8 @@ l = pin9
 r = pin8
 
 check = True
+l_ind = False
+r_ind = False
 
 message = ''
 
@@ -61,13 +63,35 @@ while True:
         else:
             message = '(s,'
         if l.read_digital():
-            message += 'l)'
+            message += 'l,'
             display.show(Image.ARROW_W)
         elif r.read_digital():
-            message += 'r)'
+            message += 'r,'
             display.show(Image.ARROW_E)
         else:
-           message += 's)'
+           message += 's,'
+        if pin_logo.is_touched():
+            message += 'l,'
+        else:
+            message += 'd,'
+        if button_a.is_pressed() and button_b.is_pressed():
+            message += 'l,'
+        else:
+            message += 'q,'
+        if button_a.was_pressed():
+            if l_ind == False:
+                message += 'l,'
+                l_ind = True
+            else:
+                message += 's,'
+                l_ind = False
+        if button_b.was_pressed():
+            if r_ind == False:
+                message += 'r)'
+                r_ind = True
+            else:
+                message += 's)'
+                r_ind = False
     
     if incoming == 'stop':
         if not (f.read_digital() or b.read_digital() or l.read_digital() or r.read_digital()):
