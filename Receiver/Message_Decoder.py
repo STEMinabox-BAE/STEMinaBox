@@ -34,7 +34,6 @@ def set_radio_channel(desired_channel, desired_queue = 10, desired_power = 4):
 def is_message_valid(message):
     for i in range(0, 13):
         if (message[i] != keywords[3*i]) and (message[i] != keywords[(3*i) + 1]) and (message[i] != keywords[(3*i) + 2]):
-            print('Invalid')
             return False
     return True
 
