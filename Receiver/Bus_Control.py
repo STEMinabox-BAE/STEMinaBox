@@ -3,9 +3,9 @@ import music
 
 # motor_pins = [pin12, pin13, pin14, pin15]
 motor_pins = [pin8, pin12, pin0, pin16]
-headlights = pin2
+headlights = pin9
 left_indicator = pin1
-right_indicator = pin9
+right_indicator = pin2
 
 blink_wait = 0
 output = False
