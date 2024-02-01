@@ -46,6 +46,8 @@ r = pin8
 check = True
 l_ind = False
 r_ind = False
+to_add_l = 's,'
+to_add_r = 's)'
 
 message = ''
 
@@ -80,18 +82,20 @@ while True:
             message += 'q,'
         if button_a.was_pressed():
             if l_ind == False:
-                message += 'l,'
+                to_add_l = 'l,'
                 l_ind = True
             else:
-                message += 's,'
+                to_add_l = 's,'
                 l_ind = False
+        message += to_add_l
         if button_b.was_pressed():
             if r_ind == False:
                 message += 'r)'
                 r_ind = True
             else:
-                message += 's)'
+                to_add_r = 's)'
                 r_ind = False
+        message += to_add_r
     
     if incoming == 'stop':
         if not (f.read_digital() or b.read_digital() or l.read_digital() or r.read_digital()):
