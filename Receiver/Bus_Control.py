@@ -86,7 +86,8 @@ def move(_fb, _lr, _speed):
             tp = _speed
         elif _lr == 'r':
             op = _speed
-    if ((not (_fb == 's')) and (not (_lr == 's'))):
+    if ((not (_fb == 's')) or (not (_lr == 's'))):
+        print('bus changing dir')
         set_motors(op, on, tp, tn, motor_pins)
 
 def set_motors(one_pos_val, one_neg_val, two_pos_val, two_neg_val, motor_pins):
