@@ -44,9 +44,9 @@ def indicators(_li, _ri):
 
 def horn(_h):
     if _h == 'l':
-        music.pitch(262)
+        music.pitch(262, -1, pin13)
     elif _h == 'q':
-        music.stop()
+        music.stop(pin13)
 
 def lights(_hl):
     if _hl == 'l':
@@ -86,7 +86,8 @@ def move(_fb, _lr, _speed):
             tp = _speed
         elif _lr == 'r':
             op = _speed
-    set_motors(op, on, tp, tn, motor_pins)
+    if ((not (_fb == 's')) and (not (_lr == 's'))):
+        set_motors(op, on, tp, tn, motor_pins)
 
 def set_motors(one_pos_val, one_neg_val, two_pos_val, two_neg_val, motor_pins):
     motor_pins[0].write_analog(one_pos_val)
