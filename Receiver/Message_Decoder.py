@@ -28,7 +28,9 @@ keywords = ['(', '(', '(',
 
 passive_message = list((keywords[5], keywords[11], keywords[17], keywords[23], keywords[29], keywords[35]))
 
-def set_radio_channel(desired_channel, desired_queue = 10, desired_power = 4):
+# (s,s,d,q,l,s)
+
+def set_radio_channel(desired_channel, desired_queue = 3, desired_power = 4):
     radio.config(queue = desired_queue, channel = desired_channel, power = desired_power)
 
 def is_message_valid(message):
