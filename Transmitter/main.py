@@ -80,21 +80,23 @@ while True:
             message += 'l,'
         else:
             message += 'q,'
-        if button_a.was_pressed():
-            if l_ind == False:
-                to_add_l = 'l,'
-                l_ind = True
-            else:
-                to_add_l = 's,'
-                l_ind = False
+        if button_a.was_pressed() and (l_ind == False):
+            l_ind = True
+        elif button_a.was_pressed() and (l_ind == True):
+            l_ind = False
+        if l_ind == False:
+            to_add_l = 'l,'
+        else:
+            to_add_l = 's,'
         message += to_add_l
-        if button_b.was_pressed():
-            if r_ind == False:
-                message += 'r)'
-                r_ind = True
-            else:
-                to_add_r = 's)'
-                r_ind = False
+        if button_b.was_pressed() and (r_ind == False):
+            r_ind = True
+        elif button_b.was_pressed() and (r_ind == True):
+            r_ind = False
+        if r_ind == False:
+            message += 'r)'
+        else:
+            to_add_r = 's)'
         message += to_add_r
     
     if incoming == 'stop':
@@ -102,4 +104,3 @@ while True:
             incoming = None
 
     radio.send(message)
-
