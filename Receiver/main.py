@@ -6,7 +6,7 @@ from Message_Decoder import *
 # How fast do we want the bus to go?
 speed = 
 # What channel is our radio set to?
-set_radio_channel( )        
+set_radio_channel()        
 
 # If the bus is on, keep reading this code over and over
 while the_bus_is_on:
