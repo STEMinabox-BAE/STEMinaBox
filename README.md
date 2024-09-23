@@ -1,20 +1,24 @@
-# STEMInABox
+# STEM In A Box :: Read Me!
 
 Welcome to the STEM In A Box software setup guide!
-
 This will walk you through how to set up each box with all the necessary software.
 
-## Videos about the Microbit
+The code you need can be found under the Source folder.
 
-### STEM In A Box
+## Videos about the Microbit
+### Long explaination 
 https://youtu.be/Z6vp6nYDs9I
+
+### Short explaination
+https://www.youtube.com/watch?v=IG7XiRU1wmQ
 
 ## Receiver
 The Receiver Micro:bit is inside the bus. This is the device that requires programming to work. Follow these steps:
 
-- Navigate to the Receiver folder above
+- Navigate to the Source folder above
+- Choose your expertise level, and nagivate into that folder
 - Click on the file names 'Receiver.hex'
-- Click the Download raw file' button 
+- Click the 'Download raw file' button, on the top right of the code area
 - <img width="693" alt="image" src="https://github.com/TastyBrainWave/STEMInABox/assets/99412364/5042a53e-bdbf-4fff-9c96-98b8a4d43898">
 - The file will go to the Downloads folder in the file explorer
 - Go to https://python.microbit.org/v/3
@@ -32,4 +36,4 @@ The file may be in the form 'Receiver.hex.txt' in which case you will need to re
 The Transmitter Micro:bit is inside the controller, and already has all the necessary code to run properly. The code is contained in this repository for you to explore if you wish.
 
 ## Issues
-If you have any further issues, please contact Sebastian Hewitt (2)
+If you have any further issues, please contact Michael Pearson
