@@ -1,0 +1,137 @@
+#--------------------------------------------[INCLUDES]-------------------------------------------
+# The import statement allows us to use code from outside of this file.
+from microbit import *
+import radio
+
+#-----------------------------------------[INITIALISATION]----------------------------------------
+# !----------[ Radio Channel needs configuring ]----------!
+# Configure controller radio signal
+radio.on()
+# The radio channel number must match the number on your controller.
+radio.config(channel = 2)
+
+# !--------------[ Speed needs configuring ]--------------!
+# Speed must be greater than zero but less than 1024!
+SPEED = 1023
+# Turn factor: The dividing factor when the vehicle is moving and turning
+# to provide smooth moving
+TURN_FACTOR = 4
+
+MOTOR_1_PINS = [pin8, pin12] # Positive and negative pins for motor 1
+MOTOR_2_PINS = [pin0, pin16] # Positive and negative pins for motor 2
+
+#-----------------------------------------[MAIN BUS CODE]-----------------------------------------
+# This is the main function that is the entry point of the code.
+def main():
+    while True:
+        # Receive message from transmitter (controller)
+        message = radio.receive()
+        
+        # Check if message has instructions
+        if message != None:
+            get_transmitter_inputs(message)
+            movement_command(SPEED)
+            indicator_command()
+
+# This function takes in a comma separated message (as a string)
+# and shall decode this message into the individual variables.
+def get_transmitter_inputs(message):
+    # These are the variables that we will need to decode from
+    # our transmitter (the controller). The global keyword
+    # makes them accessible from other functions too!
+    global joystick_1_xpos, joystick_1_xneg
+    global joystick_2_ypos, joystick_2_yneg
+    global button_a_press, button_b_press, logo_touch
+    
+    inputs = message.split(',')
+    
+    joystick_1_xpos = int(inputs[0])
+    joystick_1_xneg = int(inputs[1])
+    joystick_2_ypos = int(inputs[2])
+    joystick_2_yneg = int(inputs[3])
+    button_a_press = int(inputs[4])
+    button_b_press = int(inputs[5])
+    logo_touch = int(inputs[6])
+
+# This function will use the decoded joystick inputs and turn them into
+# speeds for the individual wheels.
+def movement_command(Speed):
+    # Turning input variables
+    # These have been flipped because left/right were reversed
+    RightTurn_Input = joystick_1_xneg
+    LeftTurn_Input = joystick_1_xpos
+
+    # Forward/backward input variables
+    # These have been flipped because forward/backward were reversed
+    ForwardMove_Input = joystick_2_yneg
+    BackwardMove_Input = joystick_2_ypos
+
+    # Direction will be positive if moving forward, negative if backwards
+    Direction = ForwardMove_Input - BackwardMove_Input
+    RightWheel_Speed = 0
+    LeftWheel_Speed = 0
+
+    # If the car is not moving forward or backward, but is turning
+    # apply opposing forces to the motors to make it turn faster
+    if Direction == 0:
+        if LeftTurn_Input != 0:
+            LeftWheel_Speed = -Speed
+            RightWheel_Speed = Speed
+        elif RightTurn_Input != 0:
+            LeftWheel_Speed = Speed
+            RightWheel_Speed = -Speed
+    # Otherwise, move forward/backward
+    else:
+        LeftWheel_Speed = Speed
+        RightWheel_Speed = Speed
+
+        if LeftTurn_Input != 0:
+            LeftWheel_Speed /= TURN_FACTOR
+        elif RightTurn_Input != 0:
+            RightWheel_Speed /= TURN_FACTOR
+
+        LeftWheel_Speed *= Direction
+        RightWheel_Speed *= Direction
+
+    power_wheel_motors(LeftWheel_Speed, RightWheel_Speed)
+
+# This function will take wheel speeds for the left and right wheel motors
+# and shall apply an analogue output to the correct pins.
+def power_wheel_motors(Motor1_Value, Motor2_Value):
+    # Motor values [positive terminal, negative terminal]
+    Motor1_TerminalValue = [0,0]
+    Motor2_TerminalValue = [0,0]
+    
+    # Motor one forward check
+    if Motor1_Value > 0:
+        Motor1_TerminalValue[0] = int(Motor1_Value)
+    # Motor one backward check
+    if Motor1_Value < 0:
+        Motor1_TerminalValue[1] = int(abs(Motor1_Value))
+
+    # Motor two forward check
+    if Motor2_Value > 0:
+        Motor2_TerminalValue[0] = int(Motor2_Value)
+    # Motor two backward check
+    if Motor2_Value < 0:
+        Motor2_TerminalValue[1] = int(abs(Motor2_Value))
+
+    # Write a signal to the pins to power the motors
+    MOTOR_1_PINS[0].write_analog(Motor1_TerminalValue[0])
+    MOTOR_1_PINS[1].write_analog(Motor1_TerminalValue[1])
+    MOTOR_2_PINS[0].write_analog(Motor2_TerminalValue[0])
+    MOTOR_2_PINS[1].write_analog(Motor2_TerminalValue[1])
+
+def indicator_command():
+    # Match the corrected turning directions
+    if joystick_1_xpos != 0:
+        display.show(Image.ARROW_W)
+    elif joystick_1_xneg != 0:
+        display.show(Image.ARROW_E)
+    else:
+        display.clear()
+    
+# Do not touch this code! This calls our programs entry point!
+if __name__ == "__main__":
+    main()
+#-------------------------------------------------------------------------------------------------
