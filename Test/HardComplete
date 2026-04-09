@@ -1,0 +1,104 @@
+#--------------------------------------------[INCLUDES]-------------------------------------------
+from microbit import *
+import radio
+
+#-----------------------------------------[INITIALISATION]----------------------------------------
+radio.on()
+radio.config(channel = 2)
+
+# Speed must be in binary (less than 1024)
+SPEED = 0b1111111111   # 1023 in binary
+
+TURN_FACTOR = 4
+
+MOTOR_1_PINS = [pin8, pin12]
+MOTOR_2_PINS = [pin0, pin16]
+
+#-----------------------------------------[MAIN BUS CODE]-----------------------------------------
+def main():
+    while True:
+        message = radio.receive()
+        
+        if message != None:
+            get_transmitter_inputs(message)
+            movement_command(SPEED)
+            indicator_command()
+
+def get_transmitter_inputs(message):
+    global joystick_1_xpos, joystick_1_xneg
+    global joystick_2_ypos, joystick_2_yneg
+    global button_a_press, button_b_press, logo_touch
+    
+    inputs = message.split(',')
+    
+    joystick_1_xpos = int(inputs[0])
+    joystick_1_xneg = int(inputs[1])
+    joystick_2_ypos = int(inputs[2])
+    joystick_2_yneg = int(inputs[3])
+    button_a_press = int(inputs[4])
+    button_b_press = int(inputs[5])
+    logo_touch = int(inputs[6])
+
+def movement_command(Speed):
+    # Keep this mapping the same as the working medium code
+    RightTurn_Input = joystick_1_xneg
+    LeftTurn_Input = joystick_1_xpos
+
+    ForwardMove_Input = joystick_2_yneg
+    BackwardMove_Input = joystick_2_ypos
+
+    Direction = ForwardMove_Input - BackwardMove_Input
+
+    RightWheel_Speed = 0
+    LeftWheel_Speed = 0
+
+    if Direction == 0:
+        if LeftTurn_Input != 0:
+            LeftWheel_Speed = -Speed
+            RightWheel_Speed = Speed
+        elif RightTurn_Input != 0:
+            LeftWheel_Speed = Speed
+            RightWheel_Speed = -Speed
+    else:
+        LeftWheel_Speed = Speed
+        RightWheel_Speed = Speed
+
+        if LeftTurn_Input != 0:
+            LeftWheel_Speed /= TURN_FACTOR
+        elif RightTurn_Input != 0:
+            RightWheel_Speed /= TURN_FACTOR
+
+        LeftWheel_Speed *= Direction
+        RightWheel_Speed *= Direction
+
+    power_wheel_motors(LeftWheel_Speed, RightWheel_Speed)
+
+def power_wheel_motors(Motor1_Value, Motor2_Value):
+    Motor1_TerminalValue = [0,0]
+    Motor2_TerminalValue = [0,0]
+    
+    if Motor1_Value > 0:
+        Motor1_TerminalValue[0] = int(Motor1_Value)
+    if Motor1_Value < 0:
+        Motor1_TerminalValue[1] = int(abs(Motor1_Value))
+
+    if Motor2_Value > 0:
+        Motor2_TerminalValue[0] = int(Motor2_Value)
+    if Motor2_Value < 0:
+        Motor2_TerminalValue[1] = int(abs(Motor2_Value))
+
+    MOTOR_1_PINS[0].write_analog(Motor1_TerminalValue[0])
+    MOTOR_1_PINS[1].write_analog(Motor1_TerminalValue[1])
+    MOTOR_2_PINS[0].write_analog(Motor2_TerminalValue[0])
+    MOTOR_2_PINS[1].write_analog(Motor2_TerminalValue[1])
+
+def indicator_command():
+    if joystick_1_xpos != 0:
+        display.show(Image.ARROW_W)
+    elif joystick_1_xneg != 0:
+        display.show(Image.ARROW_E)
+    else:
+        display.clear()
+
+if __name__ == "__main__":
+    main()
